@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "conhecendo-organismo",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

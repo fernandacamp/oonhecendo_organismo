@@ -7,6 +7,7 @@ import 'package:oonhecendo_organismo/pages/widgets/dificuldade_widget.dart';
 import 'package:oonhecendo_organismo/pages/widgets/option_widget.dart';
 
 import '../settings/colors.dart';
+import 'ajuda_page.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,6 +25,9 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
       super.initState();
       GlobalVariables.pontuacao = 100;
+      GlobalVariables.faseAtual = 0;
+      GlobalVariables.opcoesFase1 = [];
+      GlobalVariables.opcoesFase2 = [];
   }
 
   @override
@@ -97,7 +101,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OptionWidget(icon: Icon(Icons.settings), valor: 'Configurações', function: _configFunction),
-                            OptionWidget(icon: Icon(Icons.help), valor: 'Ajuda', function: _configFunction),
+                            OptionWidget(icon: Icon(Icons.help), valor: 'Ajuda', function: _ajudaFunction),
                           ],
                         ),
                       ),
@@ -113,4 +117,5 @@ class _HomeState extends State<Home> {
   }
 
   _configFunction() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ConfigPage()));
+  _ajudaFunction() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AjudaPage()));
 }

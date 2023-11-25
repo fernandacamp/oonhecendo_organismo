@@ -132,7 +132,7 @@ class _Fase2PageState extends State<Fase2Page> {
                                                         alignment: Alignment.topRight,
                                                         child: Image.asset(model.certoErrado ? "assets/images/verificar.png" : "assets/images/letra-x.png", width: 60, )
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
                                               ),

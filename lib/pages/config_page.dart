@@ -77,15 +77,6 @@ class _ConfigPageState extends State<ConfigPage> {
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            "Denillo Gomes",
-                            style: GoogleFonts.robotoSlab(
-                                fontSize: 40,
-                                fontWeight: FontWeight.w500,
-                                color: Appcolors.titlecolor
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
                             "Fernanda Campolin",
                             style: GoogleFonts.robotoSlab(
                                 fontSize: 40,

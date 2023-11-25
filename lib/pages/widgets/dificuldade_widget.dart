@@ -28,7 +28,7 @@ class _DificuldadeWidgetState extends State<DificuldadeWidget> {
               GlobalVariables.dificuldade = TypeDificuldade.Facil;
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Fase1Page()));
             },
-            child: Text('Fácil', style: GoogleFonts.robotoSlab(fontSize: 30),),
+            child: Text('Fácil', style: GoogleFonts.robotoSlab(fontSize: 30, color: Colors.white),),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.buttomcolor,
                 fixedSize: Size(200, 80),
@@ -41,7 +41,7 @@ class _DificuldadeWidgetState extends State<DificuldadeWidget> {
               GlobalVariables.dificuldade = TypeDificuldade.Medio;
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Fase1Page()));
             },
-            child: Text('Médio', style: GoogleFonts.robotoSlab(fontSize: 30),),
+            child: Text('Médio', style: GoogleFonts.robotoSlab(fontSize: 30, color: Colors.white),),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.buttomcolor,
                 fixedSize: Size(200, 80),
@@ -54,7 +54,7 @@ class _DificuldadeWidgetState extends State<DificuldadeWidget> {
               GlobalVariables.dificuldade = TypeDificuldade.Dificil;
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Fase1Page()));
             },
-            child: Text('Difícil', style: GoogleFonts.robotoSlab(fontSize: 30),),
+            child: Text('Difícil', style: GoogleFonts.robotoSlab(fontSize: 30, color: Colors.white),),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Appcolors.buttomcolor,
                 fixedSize: Size(200, 80),

@@ -1,10 +1,12 @@
 import 'dart:math';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oonhecendo_organismo/models/opcao_model.dart';
 import 'package:oonhecendo_organismo/pages/home_page.dart';
 import 'package:oonhecendo_organismo/pages/widgets/option_widget.dart';
 import 'package:oonhecendo_organismo/settings/helpers.dart';
+import 'package:oonhecendo_organismo/utils/audios_util.dart';
 import 'package:oonhecendo_organismo/utils/imagem_util.dart';
 import '../main.dart';
 import '../settings/colors.dart';
@@ -25,17 +27,26 @@ class _Fase2PageState extends State<Fase2Page> {
   int nTentativas = 0;
   int nDicas = 0;
 
+  final player = AssetsAudioPlayer();
+
   List<OpcaoModel> images = [
-    OpcaoModel(path: "Olhos", selected: false, certoErrado: false),
-    OpcaoModel(path: "Boca", selected: false, certoErrado: false),
-    OpcaoModel(path: "Nariz", selected: false, certoErrado: false),
-    OpcaoModel(path: "Orelhas", selected: false, certoErrado: false),
+    OpcaoModel(path: "Olhos", selected: false, certoErrado: false, pathAudio: ""),
+    OpcaoModel(path: "Boca", selected: false, certoErrado: false, pathAudio: ""),
+    OpcaoModel(path: "Nariz", selected: false, certoErrado: false, pathAudio: ""),
+    OpcaoModel(path: "Orelhas", selected: false, certoErrado: false, pathAudio: ""),
   ];
 
   @override
   void initState() {
     super.initState();
     pathImage = ImagemUtil.sortearImagens2();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    player.dispose();
   }
 
   @override
@@ -153,9 +164,12 @@ class _Fase2PageState extends State<Fase2Page> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: OptionWidget(icon: Icon(Icons.star), valor: GlobalVariables.pontuacao.toString(), function: (){}),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GlobalVariables.narracao ? OptionWidget(icon: Icon(Icons.record_voice_over), valor: "Narração", function: () => AudioUtil.tocarAudio(player, "Area_DestacadaMp3")) : SizedBox(),
+                          OptionWidget(icon: Icon(Icons.star), valor: GlobalVariables.pontuacao.toString(), function: (){}),
+                        ],
                       ),
 
                       Text(
@@ -205,8 +219,14 @@ class _Fase2PageState extends State<Fase2Page> {
     model.selected = true;
     if(pathImage.path.contains(model.path.toLowerCase())){
       model.certoErrado = true;
+      if(GlobalVariables.narracao) {
+        AudioUtil.tocarAudio(player, 'AcertoMp3');
+      }
     }
     else{
+      if(GlobalVariables.narracao && nTentativas == 2){
+        AudioUtil.tocarAudio(player, 'FalhouMp3');
+      }
       model.certoErrado = false;
       AppHelpers.calcularPontuacao(TypePontuacao.Errou);
     }

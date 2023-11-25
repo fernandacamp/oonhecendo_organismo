@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:oonhecendo_organismo/main.dart';
 import 'package:oonhecendo_organismo/models/opcao_model.dart';
 import 'package:oonhecendo_organismo/pages/home_page.dart';
 import 'package:oonhecendo_organismo/pages/widgets/option_widget.dart';
@@ -18,11 +19,6 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
 
-  bool volume = false;
-
-  double volumeValue = 1;
-
-  bool isToggled = false;
   double size = 30;
   double innerPadding = 0;
 
@@ -135,21 +131,21 @@ class _ConfigPageState extends State<ConfigPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() => isToggled = !isToggled);
+                                  setState(() => GlobalVariables.narracao = !GlobalVariables.narracao);
                                 },
                                 onPanEnd: (b) {
-                                  setState(() => isToggled = !isToggled);
+                                  setState(() => GlobalVariables.narracao = !GlobalVariables.narracao);
                                 },
                                 child: AnimatedContainer(
                                   height: size,
                                   width: size * 2,
                                   padding: EdgeInsets.all(innerPadding),
-                                  alignment: isToggled ? Alignment.centerRight : Alignment.centerLeft,
+                                  alignment: GlobalVariables.narracao ? Alignment.centerRight : Alignment.centerLeft,
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeOut,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
-                                    color: isToggled ? Appcolors.buttomcolor : Colors.grey.shade300,
+                                    color: GlobalVariables.narracao ? Appcolors.buttomcolor : Colors.grey.shade300,
                                   ),
                                   child: Container(
                                     width: size - innerPadding * 2,
@@ -172,9 +168,9 @@ class _ConfigPageState extends State<ConfigPage> {
                               Slider(
                                 activeColor: Appcolors.buttomcolor,
                                 thumbColor: Appcolors.titlecolor,
-                                value: volumeValue,
-                                onChanged: (newvol) => setState(() => volumeValue = newvol),
-                                min: 0, //
+                                value: GlobalVariables.volume,
+                                onChanged: (newvol) => setState(() => GlobalVariables.volume = newvol),
+                                min: 0,
                                 max:  1,
                                 divisions: 100,
                               ),
@@ -217,5 +213,5 @@ class _ConfigPageState extends State<ConfigPage> {
     );
   }
 
-  _setVolume() => setState(() => volume = !volume);
+  _setVolume() => setState(() => GlobalVariables.narracao = !GlobalVariables.narracao);
 }

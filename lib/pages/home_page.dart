@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:oonhecendo_organismo/main.dart';
 import 'package:oonhecendo_organismo/pages/config_page.dart';
 import 'package:oonhecendo_organismo/pages/fase_page1.dart';
 import 'package:oonhecendo_organismo/pages/widgets/dificuldade_widget.dart';
@@ -17,6 +18,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   bool volume = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+      super.initState();
+      GlobalVariables.pontuacao = 100;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +74,9 @@ class _HomeState extends State<Home> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.play_arrow, size: 40,),
+                                Icon(Icons.play_arrow, size: 40,color: Colors.white,),
                                 SizedBox(width: 15,),
-                                Text('Inciar', style: GoogleFonts.robotoSlab(fontSize: 30),)
+                                Text('Inciar', style: GoogleFonts.robotoSlab(fontSize: 30, color: Colors.white),)
                               ],
                             ),
                             style: ElevatedButton.styleFrom(

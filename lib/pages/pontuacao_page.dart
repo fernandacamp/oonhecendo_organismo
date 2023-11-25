@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oonhecendo_organismo/main.dart';
@@ -9,6 +10,7 @@ import 'package:oonhecendo_organismo/pages/widgets/option_widget.dart';
 import 'package:oonhecendo_organismo/utils/imagem_util.dart';
 
 import '../settings/colors.dart';
+import '../utils/audios_util.dart';
 
 class PontucaoPage extends StatefulWidget {
   const PontucaoPage({Key? key}) : super(key: key);
@@ -27,9 +29,17 @@ class _PontucaoPageState extends State<PontucaoPage> {
   double size = 30;
   double innerPadding = 0;
 
+  final player = AssetsAudioPlayer();
+
   @override
   void initState() {
     innerPadding = size / 10;
+
+    if(GlobalVariables.narracao){
+      AudioUtil.tocarAudio(player, 'TerminoMp3');
+    }
+
+
     super.initState();
   }
 

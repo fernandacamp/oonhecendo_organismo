@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oonhecendo_organismo/models/opcao_model.dart';
@@ -8,6 +9,7 @@ import 'package:oonhecendo_organismo/settings/helpers.dart';
 import 'package:oonhecendo_organismo/utils/imagem_util.dart';
 import '../main.dart';
 import '../settings/colors.dart';
+import '../utils/audios_util.dart';
 
 class Fase1Page extends StatefulWidget {
   const Fase1Page({Key? key}) : super(key: key);
@@ -25,19 +27,27 @@ class _Fase1PageState extends State<Fase1Page> {
   int nTentativas = 0;
   int nDicas = 0;
 
+  final player = AssetsAudioPlayer();
+
   List<OpcaoModel> images = [
-    OpcaoModel(path: "assets/images/olho.png", selected: false, certoErrado: false),
-    OpcaoModel(path: "assets/images/boca.png", selected: false, certoErrado: false),
-    OpcaoModel(path: "assets/images/nariz.png", selected: false, certoErrado: false),
-    OpcaoModel(path: "assets/images/cabeça.png", selected: false, certoErrado: false),
-    OpcaoModel(path: "assets/images/orelha.png", selected: false, certoErrado: false),
+    OpcaoModel(path: "assets/images/olho.png", selected: false, certoErrado: false, pathAudio: "OlhoMp3"),
+    OpcaoModel(path: "assets/images/boca.png", selected: false, certoErrado: false, pathAudio: "BocaMp3"),
+    OpcaoModel(path: "assets/images/nariz.png", selected: false, certoErrado: false, pathAudio: "NarizMp3"),
+    OpcaoModel(path: "assets/images/cabeça.png", selected: false, certoErrado: false, pathAudio: "CabecaMp3"),
+    OpcaoModel(path: "assets/images/orelha.png", selected: false, certoErrado: false, pathAudio: "OrelhaMp3"),
   ];
 
   @override
-  void initState() {
-    print(GlobalVariables.dificuldade);
+  void initState(){
     super.initState();
     pathImage = ImagemUtil.sortearImagens();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    player.dispose();
   }
 
   @override
@@ -69,16 +79,31 @@ class _Fase1PageState extends State<Fase1Page> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Appcolors.buttomcolor, width: 10),
-                              borderRadius: BorderRadius.circular(110)
-                            ),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 90,
-                              child: Image.asset(pathImage.path,),
-                            ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Appcolors.buttomcolor, width: 10),
+                                  borderRadius: BorderRadius.circular(110)
+                                ),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 90,
+                                  child: Image.asset(pathImage.path,),
+                                ),
+                              ),
+
+                              SizedBox(height: GlobalVariables.narracao ? 15 : 0,),
+                              Visibility(
+                                visible: GlobalVariables.narracao,
+                                child: GestureDetector(
+                                  onTap: () => AudioUtil.tocarAudio(player, pathImage.pathAudio),
+                                  child: Icon(Icons.record_voice_over) ,
+                                ),
+                              )
+
+                            ],
                           ),
 
                           SizedBox(height: 100,),
@@ -88,7 +113,7 @@ class _Fase1PageState extends State<Fase1Page> {
                             children: [
                               Expanded(
                                 child: SizedBox(
-                                  height: 180,
+                                  height: 230,
                                   child: Center(
                                     child: ListView.builder(
                                       physics: NeverScrollableScrollPhysics(),
@@ -101,38 +126,51 @@ class _Fase1PageState extends State<Fase1Page> {
 
                                         return Padding(
                                           padding: const EdgeInsets.only(right: 20.0),
-                                          child: SizedBox(
-                                            height: 180,
-                                            width: 180,
-                                            child: Visibility(
-                                              visible: !model.boolDica,
-                                              child: GestureDetector(
-                                                onTap: () => !acertou && nTentativas < 2 && !model.selected ? _selected(model) : null,
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(color: Appcolors.buttomcolor, width: 5),
-                                                          borderRadius: BorderRadius.circular(110)
-                                                      ),
-                                                      child: CircleAvatar(
-                                                        backgroundColor: Colors.white,
-                                                        radius: 90,
-                                                        child: Image.asset(model.path),
-                                                      )
-                                                    ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                height: 180,
+                                                width: 180,
+                                                child: Visibility(
+                                                  visible: !model.boolDica,
+                                                  child: GestureDetector(
+                                                    onTap: () => !acertou && nTentativas < 2 && !model.selected ? _selected(model) : null,
+                                                    child: Stack(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(color: Appcolors.buttomcolor, width: 5),
+                                                              borderRadius: BorderRadius.circular(110)
+                                                          ),
+                                                          child: CircleAvatar(
+                                                            backgroundColor: Colors.white,
+                                                            radius: 90,
+                                                            child: Image.asset(model.path),
+                                                          )
+                                                        ),
 
-                                                    Visibility(
-                                                      visible: model.selected,
-                                                      child: Container(
-                                                        alignment: Alignment.topRight,
-                                                        child: Image.asset(model.certoErrado ? "assets/images/verificar.png" : "assets/images/letra-x.png", width: 60, )
-                                                      ),
-                                                    )
-                                                  ],
+                                                        Visibility(
+                                                          visible: model.selected,
+                                                          child: Container(
+                                                            alignment: Alignment.topRight,
+                                                            child: Image.asset(model.certoErrado ? "assets/images/verificar.png" : "assets/images/letra-x.png", width: 60, )
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                              SizedBox(height: GlobalVariables.narracao ? 15 : 0,),
+                                              Visibility(
+                                                visible: GlobalVariables.narracao,
+                                                child: GestureDetector(
+                                                  onTap: () => AudioUtil.tocarAudio(player,model.pathAudio),
+                                                  child: Icon(Icons.record_voice_over) ,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         );
                                       }
@@ -160,9 +198,12 @@ class _Fase1PageState extends State<Fase1Page> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: OptionWidget(icon: Icon(Icons.star), valor: GlobalVariables.pontuacao.toString(), function: (){}),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GlobalVariables.narracao ? OptionWidget(icon: Icon(Icons.record_voice_over), valor: "Narração", function: () => AudioUtil.tocarAudio(player, "SelecionarMp3")) : SizedBox(),
+                          OptionWidget(icon: Icon(Icons.star), valor: GlobalVariables.pontuacao.toString(), function: (){}),
+                        ],
                       ),
 
                       Text(
@@ -211,9 +252,16 @@ class _Fase1PageState extends State<Fase1Page> {
     nTentativas++;
     model.selected = true;
     if(pathImage.path == model.path){
+      if(GlobalVariables.narracao){
+        AudioUtil.tocarAudio(player, 'AcertoMp3');
+      }
+
       model.certoErrado = true;
     }
     else{
+      if(GlobalVariables.narracao && nTentativas == 2){
+        AudioUtil.tocarAudio(player, 'FalhouMp3');
+      }
       model.certoErrado = false;
       AppHelpers.calcularPontuacao(TypePontuacao.Errou);
     }
